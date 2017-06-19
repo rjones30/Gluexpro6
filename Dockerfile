@@ -34,9 +34,6 @@ RUN rm -rf /hdpm
 # make the cvmfs filesystem visible inside the container
 VOLUME /cvmfs/oasis.opensciencegrid.org
 
-# allow user to add things to /usr/local
-RUN chmod ugo+rwx /usr/local
-
 # set the default build for sim_recon
 RUN ln -s /cvmfs/oasis.opensciencegrid.org/gluex/builds/6.7.2017 /usr/local/.hdpm
 
