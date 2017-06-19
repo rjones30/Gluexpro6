@@ -39,3 +39,4 @@ RUN chmod ugo+rwx /usr/local
 
 # set the default build for sim_recon
 RUN ln -s /cvmfs/oasis.opensciencegrid.org/gluex/builds/6.7.2017 /usr/local/.hdpm
+
