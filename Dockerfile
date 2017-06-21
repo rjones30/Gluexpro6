@@ -27,7 +27,7 @@ RUN /hdpm/bin/hdpm show -p | sh
 ADD cilogon-osg.pem /
 RUN wget --ca-certificate=cilogon-osg.pem https://zeus.phys.uconn.edu/halld/gridwork/local.tar.gz
 RUN mv /usr/sbin/sshd /usr/sbin/sshd_orig
-RUN tar xf local.tar.gz -C /
+RUN tar xf local6.tar.gz -C /
 RUN rm cilogon-osg.pem
 RUN rm local.tar.gz
 RUN rm -rf /hdpm
