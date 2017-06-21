@@ -11,7 +11,7 @@
 FROM centos:6
 
 # install a few utility rpms
-RUN yum -y install bind-utils util-linux which wget tar procps less file dump gcc strace openssh-server gcc-c++
+RUN yum -y install bind-utils util-linux which wget tar procps less file dump gcc gcc-c++ gdb strace openssh-server
 
 # install the hdpm package builder
 ENV GLUEX_TOP /usr/local
