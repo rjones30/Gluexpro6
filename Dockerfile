@@ -13,6 +13,12 @@ FROM centos:6
 # install a few utility rpms
 RUN yum -y install bind-utils util-linux which wget tar procps less file dump gcc gcc-c++ gdb strace openssh-server
 
+# install the osg worker node client packages
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+RUN yum install -y yum-plugin-priorities
+RUN rpm -Uvh https://repo.grid.iu.edu/osg/3.4/osg-3.4-el6-release-latest.rpm
+RUN yum install -y osg-wn-client
+
 # install the hdpm package builder
 ENV GLUEX_TOP /usr/local
 ADD https://halldweb.jlab.org/dist/hdpm/hdpm-0.7.0.linux.tar.gz /
