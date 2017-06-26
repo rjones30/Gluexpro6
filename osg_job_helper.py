@@ -81,7 +81,7 @@ def shellpipe(*args):
    memory at one time.
    """
    p = subprocess.Popen(";".join(args), shell=True, stdout=subprocess.PIPE)
-   return p.communicate()[0]
+   return p.stdout
 
 def shellcode(*args):
    """
@@ -134,7 +134,7 @@ def do_status(arglist):
          usage()
    batch_start = {}
    batch_count = {}
-   min_start = 0
+   min_start = 9e9
    max_count = 0
    for line in open(batchfile):
       fields = line.rstrip().split()
@@ -149,7 +149,7 @@ def do_status(arglist):
    cout = shellpipe("condor_userlog " + logfile)
    for line in cout:
       line = line.rstrip()
-      m = re.match(r"^([0-9]+)\.([0-9]+)(.*)", line)
+      m = re.match(r"^([0-9]+)\.([0-9]+) (.*)%$", line)
       if m:
          batch = int(m.group(1))
          if not batch in batch_start:
@@ -158,30 +158,34 @@ def do_status(arglist):
             continue
          offset = int(m.group(2))
          sliceno = batch_start[batch] + offset
-         line = ("slice " + str(sliceno)).ljust(15)
-         fields = line.split()
-         evict = fields[3]
-         wall = fields[4]
-         good = fields[5]
+         fields = m.group(3).split()
+         #  WallTime GoodTime CpuUsage AvgAlloc  AvgLost Goodput  Util.
+         wall = fields[0]
+         good = fields[1]
+         cpu = fields[2]
+         alloc = fields[3]
+         lost = fields[4]
+         goodput = fields[5]
+         util = fields[6]
          if wall == "0+00:00":
-            state[sliceno] = "submitted"
+            state[sliceno] = "queued"
          elif good != "0+00:00":
             state[sliceno] = "completed"
-         elif evict == "0+00:00":
+         elif good == "0+00:00":
             state[sliceno] = "running"
          else:
             state[sliceno] = "evicted"
       if longlisting:
          Print(line)
-   submitted = 0
+   queued = 0
    completed = 0
    running = 0
    failed = 0
    total = 0
    for sliceno in state:
       total += 1
-      if state[sliceno] == "submitted":
-         submitted += 1
+      if state[sliceno] == "queued":
+         queued += 1
       elif state[sliceno] == "completed":
          completed += 1
       elif state[sliceno] == "running":
@@ -189,7 +193,7 @@ def do_status(arglist):
       elif state[sliceno] == "failed":
          failed += 1
    Print("Total statistics for job", jobname, ":")
-   Print("  slices submitted: ", submitted)
+   Print("  slices queued: ", queued)
    Print("  slices completed: ", completed)
    Print("  slices running: ", running)
    Print("  slices failed: ", failed)
