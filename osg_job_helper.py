@@ -12,6 +12,9 @@ import re
 import os
 import subprocess
 
+templates = "/cvmfs/oasis.opensciencegrid.org/gluex/templates"
+container = "/cvmfs/singularity.opensciencegrid.org/rjones30/gluex:latest"
+
 def usage():
    """
    Print a usage message and exit
@@ -86,6 +89,15 @@ def shellcode(*args):
    from the last one in the sequence. Output is not captured.
    """
    return subprocess.call(";".join(args), shell=True)
+
+def helper_set_slicing(ntotal, nslice):
+   """
+   Import job slicing parameters from user job context.
+   """
+   global total_events_to_generate
+   total_events_to_generate = ntotal
+   global number_of_events_per_slice
+   number_of_events_per_slice = nslice
 
 def do_info(arglist):
    """
@@ -266,6 +278,8 @@ def do_submit(arglist):
          submit_out.write("queue " + str(count) + "\n")
       else:
          submit_out.write(line + "\n")
+   submit_out = 0
+   shellcode("condor_submit " + submitfile)
    # todo: actually submit the job to condor
    cluster = 9876 + batch
    if os.path.exists(batchfile):
@@ -273,6 +287,7 @@ def do_submit(arglist):
    else:
       batches_out = open(batchfile, "w")
    batches_out.write(str(cluster) + " " + str(start) + " " + str(count) + "\n")
+   batches_out = 0
 
 def do_cancel(arglist):
    """
