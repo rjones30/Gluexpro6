@@ -380,6 +380,9 @@ def execute(args, do_slice):
    if validate_customizations() != 0:
       Print("Error - this job script is a template;",
             "it must be customized before you can run it.")
+      Print("At the very minimum, you must update the author and date fields",
+            "in the header,")
+      Print("and fill in some descriptive text between the === lines.")
       sys.exit(1)
 
    if len(args) < 2:
