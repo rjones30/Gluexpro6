@@ -21,10 +21,10 @@ RUN yum install -y osg-wn-client
 
 # install the hdpm package builder
 ENV GLUEX_TOP /usr/local
-ADD https://halldweb.jlab.org/dist/hdpm/hdpm-0.7.0.linux.tar.gz /
-RUN tar xf hdpm-0.7.0.linux.tar.gz
-RUN rm hdpm-0.7.0.linux.tar.gz
-RUN mv hdpm-0.7.0 hdpm
+ADD https://halldweb.jlab.org/dist/hdpm/hdpm-0.7.1.linux.tar.gz /
+RUN tar xf hdpm-0.7.1.linux.tar.gz
+RUN rm hdpm-0.7.1.linux.tar.gz
+RUN mv hdpm-0.7.1 hdpm
 
 # discover and install sim-recon dependencies
 RUN /hdpm/bin/hdpm show -p | sh
@@ -42,4 +42,4 @@ RUN rm -rf /hdpm
 VOLUME /cvmfs/oasis.opensciencegrid.org
 
 # set the default build for sim_recon
-RUN ln -s /cvmfs/oasis.opensciencegrid.org/gluex/builds/6.7.2017 /usr/local/.hdpm
+RUN ln -s /cvmfs/oasis.opensciencegrid.org/gluex/.hdpm /usr/local/
