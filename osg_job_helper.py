@@ -388,14 +388,15 @@ def execute(args, do_slice):
    if len(args) < 2:
       usage()
    elif args[1] == "info":
-      do_info(args[2:])
+      retcode = do_info(args[2:])
    elif args[1] == "status":
-      do_status(args[2:])
+      retcode = do_status(args[2:])
    elif args[1] == "submit":
-      do_submit(args[2:])
+      retcode = do_submit(args[2:])
    elif args[1] == "cancel":
-      do_cancel(args[2:])
+      retcode = do_cancel(args[2:])
    elif args[1] == "doslice":
-      do_slice(args[2:])
+      retcode = do_slice(args[2:])
    else:
       usage()
+   sys.exit(retcode)
