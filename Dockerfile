@@ -35,7 +35,6 @@ RUN /hdpm/bin/hdpm show -p | sh
 RUN wget --no-check-certificate https://zeus.phys.uconn.edu/halld/gridwork/local6.tar.gz
 RUN mv /usr/sbin/sshd /usr/sbin/sshd_orig
 RUN tar xf local6.tar.gz -C /
-RUN rm cilogon-osg.pem
 RUN rm local6.tar.gz
 RUN rm -rf /hdpm
 
